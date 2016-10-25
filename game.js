@@ -62,6 +62,8 @@ function update() {
     context.drawImage(o.image, o.x, o.y);
   }
 
+  let finishedBallCount = 0;
+
   for (let ball of ballList) {
     for (let brick of brickList) {
       //AABB 충돌
@@ -90,16 +92,21 @@ function update() {
         }
         }
     }
-    if(ball.y > canvas.height)
-    {
-      ball.x = startX;
-      ball.y = startY;
-      ball.moving = false;
-    }
 
     if(ball.moving){
       ball.x += ball.speed.x;
       ball.y += ball.speed.y;
+
+      if(ball.y > canvas.height)
+      {
+        ball.x = startX;
+        ball.y = startY;
+        ball.moving = false;
+        finishedBallCount++;
+
+        if(finishedBallCount == ballList.length)
+        clicked = false;
+      }
     }
     if(ball.x < 0 || ball.x + ball.width > canvas.width)
       ball.speed.x *= -1;
